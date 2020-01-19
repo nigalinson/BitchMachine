@@ -1,4 +1,4 @@
-package com.sloth.www.green;
+package com.sloth.www.green.server.eventhandler;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Build;
+import com.sloth.www.green.R;
+import com.sloth.www.green.ui.SettingsActivity;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -47,7 +49,7 @@ public class NotificationUtils extends ContextWrapper {
     public Notification.Builder getChannelNotification(String title, String content) {
         Intent intent;
         PendingIntent ma;
-        intent = new Intent(context, MainActivity.class);
+        intent = new Intent(context, SettingsActivity.class);
         ma = PendingIntent.getActivity(context, 0, intent, 0);
 
         return new Notification.Builder(getApplicationContext(), id)
@@ -61,7 +63,7 @@ public class NotificationUtils extends ContextWrapper {
     public NotificationCompat.Builder getNotification_25(String title, String content) {
         Intent intent;
         PendingIntent ma;
-        intent = new Intent(context, MainActivity.class);
+        intent = new Intent(context, SettingsActivity.class);
         ma = PendingIntent.getActivity(context, 0, intent, 0);
 
         return new NotificationCompat.Builder(getApplicationContext())
@@ -77,7 +79,7 @@ public class NotificationUtils extends ContextWrapper {
             createNotificationChannel();
             Intent intent;
             PendingIntent ma;
-            intent = new Intent(context, MainActivity.class);
+            intent = new Intent(context, SettingsActivity.class);
             ma = PendingIntent.getActivity(context, 0, intent, 0);
 
             Notification notification = getChannelNotification

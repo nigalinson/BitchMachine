@@ -1,0 +1,79 @@
+<!--
+  ~ Copyright 2018 The app Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/general_header">
+
+        <SwitchPreferenceCompat
+            android:summaryOff="@string/sync_general_on_or_off_summary_off"
+            android:summaryOn="@string/sync_general_on_or_off_summary_on"
+            app:key="general"
+            app:title="@string/sync_general_on_or_off" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/detail_header">
+        <SwitchPreferenceCompat
+            android:summaryOff="@string/sync_detail_resume_or_pause_summary_off"
+            android:summaryOn="@string/sync_detail_resume_or_pause_summary_on"
+            app:isPreferenceVisible="false"
+            app:key="resume"
+            app:title="@string/sync_detail_resume_or_pause" />
+
+        <SwitchPreferenceCompat
+            android:summaryOff="@string/sync_detail_voice_alarm_summary_off"
+            android:summaryOn="@string/sync_detail_voice_alarm_summary_on"
+            app:isPreferenceVisible="false"
+            app:key="alarm"
+            app:title="@string/sync_detail_voice_alarm" />
+
+        <EditTextPreference
+            app:isPreferenceVisible="false"
+            app:key="attention"
+            app:title="@string/signature_attention"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:isPreferenceVisible="false"
+            app:key="success"
+            app:title="@string/signature_success"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:isPreferenceVisible="false"
+            app:key="failed"
+            app:title="@string/signature_failed"
+            app:useSimpleSummaryProvider="true" />
+
+        <SeekBarPreference
+            android:max="2000"
+            app:defaultValue="100"
+            app:isPreferenceVisible="false"
+            app:key="delay"
+            app:min="0"
+            app:title="@string/seek_delay" />
+
+        <SwitchPreferenceCompat
+            android:summaryOff="@string/sync_detail_auto_roll_back_summary_off"
+            android:summaryOn="@string/sync_detail_auto_roll_back_summary_on"
+            app:isPreferenceVisible="false"
+            app:key="roll_back"
+            app:title="@string/sync_detail_auto_roll_back" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

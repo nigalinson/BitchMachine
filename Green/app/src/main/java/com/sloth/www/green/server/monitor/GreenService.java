@@ -1,34 +1,45 @@
-package com.sloth.www.green;
+package com.sloth.www.green.server.monitor;
 
-import android.accessibilityservice.AccessibilityService;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.speech.tts.TextToSpeech;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
-import com.sloth.www.green.pipe.GreenServerReceiver;
-
+import com.google.gson.Gson;
+import com.sloth.www.green.server.GreenConfig;
+import com.sloth.www.green.server.eventhandler.NotificationUtils;
+import com.sloth.www.green.server.utils.BroadcastUtils;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-public class GreenService extends AccessibilityService implements TextToSpeech.OnInitListener, GreenServerReceiver.Callback {
+import androidx.annotation.Nullable;
+
+public class GreenService extends BroadcastServerService implements TextToSpeech.OnInitListener{
 
     private static final String TAG = "PIG_PACK";
     private TextToSpeech tts;
-
-    private boolean isOpening = true;
-
     private final long FIXED_OPEN_DELAY = 100;
-    private long userOpenDelay = 0;
 
     private Handler operate = new Handler();
+
+    private boolean isOpening = true;
+    private boolean voice = true;
+    private String voiceConttent1 = null;
+    private String voiceConttent2 = null;
+    private String voiceConttent3 = null;
+    private long userOpenDelay = 0;
+    private boolean rollback = false;
 
     @Override
     protected void onServiceConnected() {
@@ -64,7 +75,9 @@ public class GreenService extends AccessibilityService implements TextToSpeech.O
             }
 
             if(event.getText().toString().contains("[微信红包]")){
-                tts.speak("快，有红包", TextToSpeech.QUEUE_FLUSH, null);
+                if(voice){
+                    tts.speak(TextUtils.isEmpty(voiceConttent1) ? "快，有红包" : voiceConttent1, TextToSpeech.QUEUE_FLUSH, null);
+                }
 
                 openNotify(event);
 
@@ -140,7 +153,12 @@ public class GreenService extends AccessibilityService implements TextToSpeech.O
                 }
             }).start();
         }else if(className.contains("DetailUI")){
-            performGlobalAction(GLOBAL_ACTION_BACK);
+            if(rollback){
+                performGlobalAction(GLOBAL_ACTION_BACK);
+            }
+            if(voice){
+                tts.speak(TextUtils.isEmpty(voiceConttent2) ? "抢到啦" : voiceConttent1, TextToSpeech.QUEUE_FLUSH, null);
+            }
         }
 
         //聊天详情发生变化，直接抢
@@ -199,7 +217,12 @@ public class GreenService extends AccessibilityService implements TextToSpeech.O
         if(damn != null && damn.size() > 0 && damn.get(0) != null && damn.get(0).getText() != null){
             String content = damn.get(0).getText().toString();
             if(content.contains("手慢了")){
-                performGlobalAction(GLOBAL_ACTION_BACK);
+                if(rollback){
+                    performGlobalAction(GLOBAL_ACTION_BACK);
+                }
+                if(voice){
+                    tts.speak(TextUtils.isEmpty(voiceConttent3) ? "手慢了" : voiceConttent1, TextToSpeech.QUEUE_FLUSH, null);
+                }
             }
         }
 
@@ -302,11 +325,6 @@ public class GreenService extends AccessibilityService implements TextToSpeech.O
         }
     }
 
-    @Override
-    public void onDestroy() {
-        unregisterReceiver(receiver);
-        super.onDestroy();
-    }
 
     @Override
     public void onInterrupt() {
@@ -328,25 +346,39 @@ public class GreenService extends AccessibilityService implements TextToSpeech.O
         }
     }
 
-    private void registerReceiver() {
-        IntentFilter iFilter = new IntentFilter();
-        iFilter.addAction(GreenConfig.ACTION_SERVER);
-        registerReceiver(receiver, iFilter);
-    }
-
-    private GreenServerReceiver receiver = new GreenServerReceiver(this);
 
     private void refreshServiceState() {
-        Intent it = new Intent(GreenConfig.ACTION_CLIENT);
-        it.putExtra("opening", isOpening);
-        sendBroadcast(it);
+        sendToClient("opening", isOpening);
 
         new NotificationUtils(this).sendNotification("正在运行", isOpening ? "已开启" : "已暂停");
     }
 
-    @Override
-    public void requestState() {
-//        isOpening = !isOpening;
-        refreshServiceState();
+    private void sendToClient(String key, @Nullable Object value) {
+        BroadcastUtils.send(this, GreenConfig.ACTION_CLIENT, key , value);
     }
+
+    @Override
+    protected void achieveBroadcast(String key, Intent intent) {
+        if(GreenConfig.FUNCTIONS.RUNNING.equals(key)){
+            isOpening = intent.getBooleanExtra("value", false);
+        }else if(GreenConfig.FUNCTIONS.VOICE.equals(key)){
+            voice = intent.getBooleanExtra("value", false);
+        }else if(GreenConfig.FUNCTIONS.VOICE_CONTENT.equals(key)){
+            String ori = intent.getStringExtra("value");
+            if(!TextUtils.isEmpty(ori)){
+                Map<String, String> content = new Gson().fromJson(ori, Map.class);
+                voiceConttent1 = content.get(GreenConfig.FUNCTIONS.VOICE_CONTENT_1);
+                voiceConttent2 = content.get(GreenConfig.FUNCTIONS.VOICE_CONTENT_2);
+                voiceConttent3 = content.get(GreenConfig.FUNCTIONS.VOICE_CONTENT_3);
+            }
+
+        }else if(GreenConfig.FUNCTIONS.DELAY.equals(key)){
+            userOpenDelay = intent.getIntExtra("value", 0);
+        }else if(GreenConfig.FUNCTIONS.ROLL_BACK.equals(key)){
+            rollback = intent.getBooleanExtra("value", false);
+        }else{  }
+
+    }
+
+
 }
