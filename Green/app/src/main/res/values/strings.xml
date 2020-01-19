@@ -1,3 +1,38 @@
 <resources>
     <string name="app_name">猪包</string>
+
+    <!--settings-->
+    <string name="title_activity_settings">抢红包</string>
+
+    <!--general-->
+    <string name="general_header">总开关</string>
+
+    <string name="sync_general_on_or_off">开启服务</string>
+    <string name="sync_general_on_or_off_summary_on">已开启 - 请打开下方的 [开始红包监听]</string>
+    <string name="sync_general_on_or_off_summary_off">已停用 - 点击选择打开猪包无障碍服务</string>
+
+    <!--detail-->
+    <string name="detail_header">运行设置</string>
+
+    <string name="sync_detail_resume_or_pause">开始监听红包</string>
+    <string name="sync_detail_resume_or_pause_summary_on">已开启 - 自己发个红包试试吧</string>
+    <string name="sync_detail_resume_or_pause_summary_off">已暂停</string>
+
+    <string name="sync_detail_voice_alarm">语音提醒</string>
+    <string name="sync_detail_voice_alarm_summary_on">语音已打开</string>
+    <string name="sync_detail_voice_alarm_summary_off">语音已关闭</string>
+
+    <string name="sync_detail_auto_roll_back">自动返回聊天列表</string>
+    <string name="sync_detail_auto_roll_back_summary_on">抢完红包后会自动回退到聊天页面</string>
+    <string name="sync_detail_auto_roll_back_summary_off">会停留在红包页面</string>
+
+    <string name="signature_attention">发现红包语音</string>
+    <string name="signature_success">抢到红包语音</string>
+    <string name="signature_failed">没抢到语音</string>
+
+    <string name="seek_delay">抢红包延时</string>
+
+    <string name="on">已开启</string>
+    <string name="off">已关闭</string>
+
 </resources>
