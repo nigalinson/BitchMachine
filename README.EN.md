@@ -5,6 +5,10 @@ English
 
 [Chinese](README.md)
 
+# Download
+
+[Click here start downlading](https://fir.im/vy84)
+
 # How to use
 
 1. Install app
