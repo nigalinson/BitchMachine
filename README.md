@@ -1,27 +1,25 @@
 # BitchMachine
-A tool to grab red envelope in wechat
+开源微信抢红包小工具
 
-English
+[English](README.EN.md)
 
-[Chinese](README.CN.md)
+Chinese
 
-# How to use
+# 使用说明
 
-1. Install app
-2. Open accessibility service of this app
-3. Kepp screen on
-3. wait for a red envelope in wechat
+1. 下载并安装APP
+2. 在无障碍服务中开启本服务
+3. 保持屏幕常亮（否则仅语音提醒，无法自动抢红包）
+3. 等待红包
 
-# Implementation
+# 实现原理
 
-Android system allows user apps to monitor Notifications and Window Content Change Events of apps with some specific package names. 
-So, When these events happens:
+Android无障碍服务中，允许APP对通知栏及屏幕上指定包名的应用窗口变化进行监听。
 
-- achieve notifications with red envelope key words
-- achieve messages with red envelope key words in chat list
-- achieve messages with red envelope key words in chat detail
+- 当通知栏收到红包关键字时
+- 当微信聊天屏幕出现红点及红包关键字时
+- 当聊天框详情出现红包关键字时
 
-we'll key performing click actions until red envelope "achieveUI", Then find the button with key words '拆', and perform click on it.
-after this, you need to rool back to chat list activity.
+不断模拟点击至红包页面，并获取红包“拆”关键字Button并点击，抢红包结束后，自动返回上一页
 
-WARNING: For technical study only, not for commercial use
+警告: 本工具仅作技术学习，请勿进行违法或商业操作
