@@ -5,6 +5,10 @@
 
 Chinese
 
+# 下载
+
+[下载地址](https://fir.im/vy84)
+
 # 使用说明
 
 1. 下载并安装APP
