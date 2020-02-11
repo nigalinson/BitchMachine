@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">猪包</string>
+    <string name="app_name">抢红包</string>
 
     <!--settings-->
     <string name="title_activity_settings">抢红包</string>
